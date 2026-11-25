@@ -1,0 +1,672 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080f1e">
+<title>Shankar Finance Calculator</title>
+
+<style>
+:root {
+  --bg: #080f1e;
+  --gold: #e9c879;
+  --gold2: #f8e6b2;
+  --text: #f5f7fb;
+  --muted: #9eacc0;
+  --border: #34445b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  background:
+    radial-gradient(ellipse at top left, #253752, transparent 45%),
+    radial-gradient(ellipse at bottom right, #332a20, transparent 35%),
+    var(--bg);
+  color: var(--text);
+}
+
+header {
+  text-align: center;
+  padding: 30px 16px;
+  background: linear-gradient(135deg, #101b2e, #1b2b43, #342c22);
+  border-bottom: 1px solid #51452e;
+}
+
+.brand-icon {
+  width: 65px;
+  height: 65px;
+  margin: 0 auto 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #f8e6b2, #b88b3d);
+  color: #172033;
+  font-size: 34px;
+  font-weight: 900;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 26px;
+  color: var(--gold2);
+}
+
+header p {
+  color: #b8c7d9;
+  font-size: 13px;
+  margin-bottom: 0;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  padding: 18px 14px;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.tab {
+  padding: 14px 8px;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  background: #17263b;
+  color: #cbd5e1;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.tab.active {
+  background: linear-gradient(135deg, #f3d995, #bd9148);
+  color: #141c28;
+  border-color: var(--gold2);
+}
+
+.card {
+  background: linear-gradient(145deg, #1c2b41, #101a2b);
+  border: 1px solid #35445b;
+  border-radius: 24px;
+  padding: 22px;
+  box-shadow: 0 15px 35px #00000035;
+}
+
+.calculator-icon {
+  width: 54px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #f3d995, #b88b3d);
+  color: #172033;
+  font-size: 27px;
+  margin-bottom: 14px;
+}
+
+h2 {
+  margin: 0 0 8px;
+  color: var(--gold2);
+  font-size: 21px;
+}
+
+.subtitle {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 18px;
+}
+
+label {
+  display: block;
+  margin: 15px 0 7px;
+  color: #c5d0df;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+input, select {
+  width: 100%;
+  min-width: 0;
+  padding: 14px;
+  border-radius: 13px;
+  border: 1px solid #3a4b64;
+  background: #0b1525;
+  color: white;
+  font-size: 16px;
+  outline: none;
+}
+
+input:focus, select:focus {
+  border-color: var(--gold);
+}
+
+input::placeholder {
+  color: #64748b;
+}
+
+.time-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
+}
+
+.time-grid input {
+  padding: 13px 6px;
+  text-align: center;
+}
+
+.time-label {
+  text-align: center;
+  color: var(--gold);
+  font-size: 12px;
+  margin: 12px 0 7px;
+}
+
+.calculate {
+  width: 100%;
+  margin-top: 22px;
+  padding: 15px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #f3d995, #bd9148);
+  color: #141c28;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.result {
+  display: none;
+  margin-top: 20px;
+  padding: 16px;
+  background: linear-gradient(135deg, #14243a, #1b2d42);
+  border: 1px solid #3b4c63;
+  border-radius: 16px;
+}
+
+.result h3 {
+  margin: 0 0 12px;
+  color: var(--gold2);
+  font-size: 16px;
+}
+
+.result p {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0;
+  padding: 11px 0;
+  border-bottom: 1px solid #35465b;
+  font-size: 13px;
+  color: #cbd5e1;
+}
+
+.result p:last-child {
+  border-bottom: none;
+}
+
+.result strong {
+  color: var(--gold2);
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.calculator {
+  display: none;
+}
+
+.calculator.active {
+  display: block;
+}
+
+footer {
+  text-align: center;
+  padding: 25px 15px 35px;
+  color: #8291a7;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+footer span {
+  color: var(--gold);
+}
+
+@media(max-width:360px) {
+  .card {
+    padding: 17px;
+  }
+
+  header h1 {
+    font-size: 23px;
+  }
+
+  .tab {
+    font-size: 12px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand-icon">₹</div>
+  <h1>Shankar Finance</h1>
+  <p>Smart calculations. Simple decisions.</p>
+</header>
+
+<main class="container">
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('emi',this)">💳 Loan & EMI</button>
+  <button class="tab" onclick="showTab('age',this)">🎂 Age</button>
+  <button class="tab" onclick="showTab('simple',this)">💰 Simple Interest</button>
+  <button class="tab" onclick="showTab('compound',this)">📈 Compound Interest</button>
+</div>
+
+<!-- EMI -->
+
+<section id="emi" class="calculator active">
+<div class="card">
+<div class="calculator-icon">₹</div>
+<h2>Loan & EMI Calculator</h2>
+<p class="subtitle">Calculate monthly EMI and total repayment.</p>
+
+<label>Loan Amount (₹)</label>
+<input type="number" id="loan" min="0.01" placeholder="500000">
+
+<label>Annual Interest Rate (%)</label>
+<input type="number" id="loanRate" min="0" step="any" placeholder="8.5">
+
+<label>Loan Tenure</label>
+<div class="time-grid">
+<div>
+<div class="time-label">Years</div>
+<input type="number" id="loanYears" min="0" placeholder="0">
+</div>
+<div>
+<div class="time-label">Months</div>
+<input type="number" id="loanMonths" min="0" max="11" placeholder="0">
+</div>
+<div>
+<div class="time-label">Extra Months</div>
+<input type="number" id="loanExtra" min="0" max="11" placeholder="0">
+</div>
+</div>
+
+<button class="calculate" onclick="calculateEMI()">Calculate EMI</button>
+<div class="result" id="emiResult"></div>
+</div>
+</section>
+
+<!-- AGE -->
+
+<section id="age" class="calculator">
+<div class="card">
+<div class="calculator-icon">🎂</div>
+<h2>Age Calculator</h2>
+<p class="subtitle">Calculate your exact age.</p>
+
+<label>Date of Birth</label>
+<input type="date" id="dob">
+
+<button class="calculate" onclick="calculateAge()">Calculate Age</button>
+<div class="result" id="ageResult"></div>
+</div>
+</section>
+
+<!-- SIMPLE INTEREST -->
+
+<section id="simple" class="calculator">
+<div class="card">
+<div class="calculator-icon">💰</div>
+<h2>Monthly Simple Interest</h2>
+<p class="subtitle">Enter annual interest rate. Monthly rate is calculated automatically.</p>
+
+<label>Principal Amount (₹)</label>
+<input type="number" id="siPrincipal" min="0.01" step="any" placeholder="10000">
+
+<label>Annual Interest Rate (%)</label>
+<input type="number" id="siRate" min="0" step="any" placeholder="12">
+
+<label>Time Period</label>
+<div class="time-grid">
+<div>
+<div class="time-label">Years</div>
+<input type="number" id="siYears" min="0" placeholder="0">
+</div>
+<div>
+<div class="time-label">Months</div>
+<input type="number" id="siMonths" min="0" max="11" placeholder="0">
+</div>
+<div>
+<div class="time-label">Days</div>
+<input type="number" id="siDays" min="0" max="30" placeholder="0">
+</div>
+</div>
+
+<button class="calculate" onclick="calculateSI()">Calculate Monthly Interest</button>
+<div class="result" id="siResult"></div>
+</div>
+</section>
+
+<!-- COMPOUND INTEREST -->
+
+<section id="compound" class="calculator">
+<div class="card">
+<div class="calculator-icon">📈</div>
+<h2>Monthly Compound Interest</h2>
+<p class="subtitle">Annual rate converted to monthly rate with monthly compounding.</p>
+
+<label>Principal Amount (₹)</label>
+<input type="number" id="ciPrincipal" min="0.01" step="any" placeholder="10000">
+
+<label>Annual Interest Rate (%)</label>
+<input type="number" id="ciRate" min="0" step="any" placeholder="12">
+
+<label>Time Period</label>
+<div class="time-grid">
+<div>
+<div class="time-label">Years</div>
+<input type="number" id="ciYears" min="0" placeholder="0">
+</div>
+<div>
+<div class="time-label">Months</div>
+<input type="number" id="ciMonths" min="0" max="11" placeholder="0">
+</div>
+<div>
+<div class="time-label">Days</div>
+<input type="number" id="ciDays" min="0" max="30" placeholder="0">
+</div>
+</div>
+
+<button class="calculate" onclick="calculateCI()">Calculate Monthly Compound Interest</button>
+<div class="result" id="ciResult"></div>
+</div>
+</section>
+
+</main>
+
+<footer>
+<span>SHANKAR FINANCE</span><br>
+Premium Finance Calculator<br>
+Made with care by Shankar
+</footer>
+
+<script>
+
+// TAB NAVIGATION
+
+function showTab(id, button) {
+  document.querySelectorAll(".calculator").forEach(section => {
+    section.classList.remove("active");
+  });
+
+  document.getElementById(id).classList.add("active");
+
+  document.querySelectorAll(".tab").forEach(tab => {
+    tab.classList.remove("active");
+  });
+
+  button.classList.add("active");
+}
+
+// RUPEE FORMAT
+
+function money(value) {
+  return value.toLocaleString("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 2
+  });
+}
+
+// SHOW RESULT
+
+function showResult(id, html) {
+  const result = document.getElementById(id);
+  result.innerHTML = html;
+  result.style.display = "block";
+}
+
+// VALIDATION
+
+function validPositive(...values) {
+  return values.every(value =>
+    Number.isFinite(value) && value > 0
+  );
+}
+
+function validNonNegative(...values) {
+  return values.every(value =>
+    Number.isFinite(value) && value >= 0
+  );
+}
+
+// TIME CONVERSION
+// 1 year = 12 months
+// 1 month = 30 days
+
+function getTimeYears(yearsId, monthsId, daysId) {
+  const years = Number(document.getElementById(yearsId).value || 0);
+  const months = Number(document.getElementById(monthsId).value || 0);
+  const days = Number(document.getElementById(daysId).value || 0);
+
+  if (
+    !validNonNegative(years, months, days) ||
+    months > 11 ||
+    days > 30
+  ) {
+    return null;
+  }
+
+  const totalMonths = years * 12 + months + days / 30;
+
+  return {
+    years,
+    months,
+    days,
+    totalMonths,
+    time: totalMonths / 12
+  };
+}
+
+// LOAN EMI
+
+function calculateEMI() {
+  const P = Number(document.getElementById("loan").value);
+  const R = Number(document.getElementById("loanRate").value);
+
+  const years = Number(document.getElementById("loanYears").value || 0);
+  const months = Number(document.getElementById("loanMonths").value || 0);
+  const extra = Number(document.getElementById("loanExtra").value || 0);
+
+  if (
+    !validPositive(P) ||
+    !validNonNegative(R, years, months, extra) ||
+    months > 11 ||
+    extra > 11
+  ) {
+    alert("Please enter valid loan details.");
+    return;
+  }
+
+  const N = years * 12 + months + extra;
+
+  if (N <= 0) {
+    alert("Please enter loan tenure.");
+    return;
+  }
+
+  const r = R / 1200;
+
+  let emi;
+
+  if (r === 0) {
+    emi = P / N;
+  } else {
+    const factor = Math.pow(1 + r, N);
+    emi = P * r * factor / (factor - 1);
+  }
+
+  const total = emi * N;
+  const interest = total - P;
+
+  showResult("emiResult", `
+    <h3>Loan Summary</h3>
+    <p>Monthly EMI <strong>${money(emi)}</strong></p>
+    <p>Principal <strong>${money(P)}</strong></p>
+    <p>Total Interest <strong>${money(interest)}</strong></p>
+    <p>Total Payment <strong>${money(total)}</strong></p>
+    <p>Tenure <strong>${N} months</strong></p>
+  `);
+}
+
+// AGE CALCULATOR
+
+function calculateAge() {
+  const value = document.getElementById("dob").value;
+
+  if (!value) {
+    alert("Please select your date of birth.");
+    return;
+  }
+
+  const dob = new Date(value + "T00:00:00");
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  if (dob > today) {
+    alert("Date of birth cannot be in the future.");
+    return;
+  }
+
+  let years = today.getFullYear() - dob.getFullYear();
+  let months = today.getMonth() - dob.getMonth();
+  let days = today.getDate() - dob.getDate();
+
+  if (days < 0) {
+    months--;
+    const previousMonth = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      0
+    );
+    days += previousMonth.getDate();
+  }
+
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
+
+  showResult("ageResult", `
+    <h3>Your Age</h3>
+    <p>Years <strong>${years}</strong></p>
+    <p>Months <strong>${months}</strong></p>
+    <p>Days <strong>${days}</strong></p>
+    <p>Total Months <strong>${years * 12 + months}</strong></p>
+  `);
+}
+
+// SIMPLE INTEREST - MONTHLY RATE
+
+function calculateSI() {
+  const P = Number(document.getElementById("siPrincipal").value);
+  const annualRate = Number(document.getElementById("siRate").value);
+
+  const period = getTimeYears(
+    "siYears", "siMonths", "siDays"
+  );
+
+  if (
+    !validPositive(P) ||
+    !validNonNegative(annualRate) ||
+    period === null
+  ) {
+    alert("Please enter valid interest details.");
+    return;
+  }
+
+  // Annual rate converted into monthly rate
+  const monthlyRate = annualRate / 12;
+
+  // Monthly interest in rupees
+  const monthlyInterest = P * monthlyRate / 100;
+
+  // Simple interest for complete and fractional months
+  const totalInterest = monthlyInterest * period.totalMonths;
+
+  const totalAmount = P + totalInterest;
+
+  showResult("siResult", `
+    <h3>Simple Interest Summary</h3>
+    <p>Principal <strong>${money(P)}</strong></p>
+    <p>Annual Rate <strong>${annualRate}%</strong></p>
+    <p>Monthly Rate <strong>${monthlyRate.toFixed(4)}%</strong></p>
+    <p>Monthly Interest <strong>${money(monthlyInterest)}</strong></p>
+    <p>Time <strong>${period.years}Y ${period.months}M ${period.days}D</strong></p>
+    <p>Total Interest <strong>${money(totalInterest)}</strong></p>
+    <p>Total Amount <strong>${money(totalAmount)}</strong></p>
+  `);
+}
+
+// COMPOUND INTEREST - MONTHLY COMPOUNDING
+
+function calculateCI() {
+  const P = Number(document.getElementById("ciPrincipal").value);
+  const annualRate = Number(document.getElementById("ciRate").value);
+
+  const period = getTimeYears(
+    "ciYears", "ciMonths", "ciDays"
+  );
+
+  if (
+    !validPositive(P) ||
+    !validNonNegative(annualRate) ||
+    period === null
+  ) {
+    alert("Please enter valid compound interest details.");
+    return;
+  }
+
+  // Annual rate converted into monthly rate
+  const monthlyRate = annualRate / 12;
+
+  // Monthly compounding
+  const amount = P * Math.pow(
+    1 + monthlyRate / 100,
+    period.totalMonths
+  );
+
+  const interest = amount - P;
+
+  const monthlyInterest = P * monthlyRate / 100;
+
+  showResult("ciResult", `
+    <h3>Compound Interest Summary</h3>
+    <p>Principal <strong>${money(P)}</strong></p>
+    <p>Annual Rate <strong>${annualRate}%</strong></p>
+    <p>Monthly Rate <strong>${monthlyRate.toFixed(4)}%</strong></p>
+    <p>First Month Interest <strong>${money(monthlyInterest)}</strong></p>
+    <p>Time <strong>${period.years}Y ${period.months}M ${period.days}D</strong></p>
+    <p>Compound Interest <strong>${money(interest)}</strong></p>
+    <p>Total Amount <strong>${money(amount)}</strong></p>
+  `);
+}
+
+</script>
+
+</body>
+</html>
